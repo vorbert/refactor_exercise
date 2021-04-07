@@ -1,7 +1,7 @@
 <?php
 
 class Config {
-	public static $baseDir = "/vagrant/refactor_exercise";
+	public static $baseDir = __DIR__;
 }
 
 new Config();
