@@ -38,3 +38,4 @@ Thumbs.db
 *.sublime-project
 .env
 vendor/
+.phpunit.result.cache

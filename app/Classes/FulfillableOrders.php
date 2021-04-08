@@ -1,12 +1,11 @@
 <?php
+namespace App\Classes;
 
-include 'Config.php';
-/**
- * 
- */
+use App\Classes\CsvHandler;
+
 class FulfillableOrders
 {
-	private $argC, $argV, $stock;
+	public $argC, $argV, $stock;
 	
 	public function __construct($argc, $argv) {
 		$this->argC = $argc;
@@ -20,7 +19,7 @@ class FulfillableOrders
 	    return $result == 0 ? $a['created_at'] <=> $b['created_at'] : $result;
 	}
 
-	private function checkInputArguments() {
+	public function checkInputArguments() {
 		if ($this->argC != 2) {
 		    echo "Ambiguous number of parameters!\n";
 		    exit(1);
@@ -31,19 +30,21 @@ class FulfillableOrders
 		    exit(1);
 		}
 
-		if (!file_exists('orders.csv')) {
+		if (!file_exists(__DIR__ . '/../orders.csv')) {
 			echo "Missing csv file!\n";
 		    exit(1);
 		}
+
+		return true;
 	}
 
 	private function processFulfillableOrders() {
 		try {
-			$csvHandler = new Classes_CsvHandler();
+			$csvHandler = new CsvHandler();
 			$csvFile = $csvHandler->processCsvFileContent('orders.csv');
 			usort($csvFile['rows'], "static::sortCsv");
 			$this->renderCsvFile($csvFile);
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			echo "Something wnt wrong!\n";
 			echo $e->getMessage();
 		}
@@ -84,5 +85,3 @@ class FulfillableOrders
 		}
 	}
 }
-
-new FulfillableOrders($argc, $argv);

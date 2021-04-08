@@ -1,6 +1,7 @@
 <?php
+namespace App\Classes;
 
-class Classes_CsvHandler
+class CsvHandler
 {
 	public function processCsvFileContent($fileName) {
 		$header = [];
