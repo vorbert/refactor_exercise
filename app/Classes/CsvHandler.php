@@ -3,6 +3,12 @@ namespace App\Classes;
 
 class CsvHandler
 {
+	/**
+	 * processCsvFileContent function
+	 *
+	 * @param [type] $fileName
+	 * @return void
+	 */
 	public function processCsvFileContent($fileName) {
 		$header = [];
 		$rows = [];
@@ -25,5 +31,28 @@ class CsvHandler
 		}
 
 		return ['header' => $header, 'rows' => $rows];	
+	}
+
+	/**
+	 * static sortCsv function
+	 *
+	 * @param [type] $a
+	 * @param [type] $b
+	 * @return void
+	 */
+	public static function sortArray($a, $b) {
+		$result = -1 * ($a['priority'] <=> $b['priority']);
+	    return $result == 0 ? $a['created_at'] <=> $b['created_at'] : $result;
+	}
+
+	/**
+	 * sortCsvFile function
+	 *
+	 * @param [type] $csvFile
+	 * @return void
+	 */
+	public function sortCsvFile($csvFile) {
+		usort($csvFile['rows'], "static::sortArray");
+		return $csvFile;
 	}
 }

@@ -7,6 +7,12 @@ class FulfillableOrders
 {
 	public $argC, $argV, $stock;
 	
+	/**
+	 * __construct function
+	 *
+	 * @param [type] $argc
+	 * @param [type] $argv
+	 */
 	public function __construct($argc, $argv) {
 		$this->argC = $argc;
 		$this->argV = $argv;
@@ -14,11 +20,11 @@ class FulfillableOrders
 		$this->processFulfillableOrders();
 	}
 
-	private static function sortCsv($a, $b) {
-		$result = -1 * ($a['priority'] <=> $b['priority']);
-	    return $result == 0 ? $a['created_at'] <=> $b['created_at'] : $result;
-	}
-
+	/**
+	 * checkInputArguments function
+	 *
+	 * @return void
+	 */
 	public function checkInputArguments() {
 		if ($this->argC != 2) {
 		    echo "Ambiguous number of parameters!\n";
@@ -38,11 +44,16 @@ class FulfillableOrders
 		return true;
 	}
 
+	/**
+	 * processFulfillableOrders function
+	 *
+	 * @return void
+	 */
 	private function processFulfillableOrders() {
 		try {
 			$csvHandler = new CsvHandler();
-			$csvFile = $csvHandler->processCsvFileContent('orders.csv');
-			usort($csvFile['rows'], "static::sortCsv");
+			$csvFile = $csvHandler->processCsvFileContent(__DIR__ . '/../orders.csv');
+			$csvFile = $csvHandler->sortCsvFile($csvFile);
 			$this->renderCsvFile($csvFile);
 		} catch(\Exception $e) {
 			echo "Something wnt wrong!\n";
@@ -50,6 +61,12 @@ class FulfillableOrders
 		}
 	}
 
+	/**
+	 * renderCsvFile function
+	 *
+	 * @param [type] $csvFile
+	 * @return void
+	 */
 	private function renderCsvFile($csvFile) {
 		foreach ($csvFile['header'] as $headerColumn) {
 	    	echo str_pad($headerColumn, 20);
