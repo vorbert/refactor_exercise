@@ -54,7 +54,8 @@ class FulfillableOrders
 			$csvHandler = new CsvHandler();
 			$csvFile = $csvHandler->processCsvFileContent(__DIR__ . '/../orders.csv');
 			$csvFile = $csvHandler->sortCsvFile($csvFile);
-			$this->renderCsvFile($csvFile);
+			$output = $this->renderCsvFileToVariable($csvFile);
+			echo $output;
 		} catch(\Exception $e) {
 			echo "Something wnt wrong!\n";
 			echo $e->getMessage();
@@ -62,21 +63,22 @@ class FulfillableOrders
 	}
 
 	/**
-	 * renderCsvFile function
+	 * renderCsvFileToVariable function
 	 *
 	 * @param [type] $csvFile
 	 * @return void
 	 */
-	private function renderCsvFile($csvFile) {
+	public function renderCsvFileToVariable($csvFile) {
+		$output = '';
 		foreach ($csvFile['header'] as $headerColumn) {
-	    	echo str_pad($headerColumn, 20);
+	    	$output .= str_pad($headerColumn, 20);
 		}
-		echo "\n";
+		$output .= "\n";
 
 		foreach ($csvFile['header'] as $headerColumn) {
-		    echo str_repeat('=', 20);
+		    $output .= str_repeat('=', 20);
 		}
-		echo "\n";
+		$output .= "\n";
 
 		foreach ($csvFile['rows'] as $row) {
 		    if ($this->stock->{$row['product_id']} >= $row['quantity']) {
@@ -92,13 +94,14 @@ class FulfillableOrders
             				default:
             					$text = 'high';
 		            	}
-		                echo str_pad($text, 20);
+		                $output .= str_pad($text, 20);
 		            } else {
-		                echo str_pad($row[$headerColumn], 20);
+		                $output .= str_pad($row[$headerColumn], 20);
 		            }
 		        }
-		        echo "\n";
+		        $output .= "\n";
 		    }
 		}
+		return $output;
 	}
 }

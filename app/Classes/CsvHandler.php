@@ -34,7 +34,7 @@ class CsvHandler
 	}
 
 	/**
-	 * static sortCsv function
+	 * static sortArray function
 	 *
 	 * @param [type] $a
 	 * @param [type] $b
