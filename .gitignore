@@ -37,3 +37,5 @@ Thumbs.db
 *.sublime-workspace
 *.sublime-project
 .env
+vendor/
+.phpunit.result.cache
